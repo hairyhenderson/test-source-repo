@@ -2,6 +2,7 @@
     "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
     "release-type": "go",
     "changelog-type": "default",
+    "skip-github-release": true,
     "changelog-sections": [
         {
             "type": "feat",
