@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.5...v0.0.6) (2024-06-24)
+
+
+### Continuous Integration
+
+* release and upload in single job ([#10](https://github.com/hairyhenderson/test-source-repo/issues/10)) ([b93c772](https://github.com/hairyhenderson/test-source-repo/commit/b93c7720d0fc23ab93e9b75b0bb060147bd91ba7))
+
 ## [0.0.5](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.4...v0.0.5) (2024-06-24)
 
 
