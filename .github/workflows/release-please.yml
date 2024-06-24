@@ -18,8 +18,23 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
-      - uses: googleapis/release-please-action@v4
+      - name: Install release-please
+        run: npm -g install release-please
+      - name: Run release-please github-release
         id: release
+        run: |
+          release-please \
+            --token ${{ steps.app-token.outputs.token }} \
+            --repo-url ${{ github.repository }} \
+              github-release \
+              --draft > rp-out.log
+          
+          jq -R 'fromjson?' rp-out.log > rp-out.json
+          echo "json output: $(cat rp-out.json)"
+
+          # now set outputs
+          cat rp-out.json >> "$GITHUB_ENV"
+      - uses: googleapis/release-please-action@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
           config-file: release-please-config.json
@@ -30,6 +45,12 @@ jobs:
 
           echo ${{ steps.release.outputs.body }} > notes.md
           echo "${{ steps.release.outputs.tag_name }}" > release-asset.txt
+
+          # assert that tag_name isn't empty
+          if [ -z "${{ steps.release.outputs.tag_name }}" ]; then
+            echo "tag_name is empty"
+            exit 1
+          fi
 
           gh release create \
             ${{ steps.release.outputs.tag_name }} \
