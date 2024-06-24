@@ -1,0 +1,26 @@
+name: Release Artifacts
+
+on:
+  release:
+    types:
+      - created
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: actions/create-github-app-token@v1
+      #   id: app-token
+      #   with:
+      #     app-id: ${{ vars.APP_ID }}
+      #     private-key: ${{ secrets.PRIVATE_KEY }}
+      - run: |
+          echo "Triggered by release ${{ github.event.release.tag_name }}"
+          echo "Release ID: ${{ github.event.release.id }}"
+          echo "Release Name: ${{ github.event.release.name }}"
+          echo "Release Body: ${{ github.event.release.body }}"
+          echo "Full Release: ${{ github.event.release }}"
