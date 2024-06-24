@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.8](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.7...v0.0.8) (2024-06-24)
+
+
+### Miscellaneous Chores
+
+* test2 ([#15](https://github.com/hairyhenderson/test-source-repo/issues/15)) ([f46411c](https://github.com/hairyhenderson/test-source-repo/commit/f46411ca885695df88720a5d52dc7602d7c3adf7))
+
 ## [0.0.7](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.6...v0.0.7) (2024-06-24)
 
 
