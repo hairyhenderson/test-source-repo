@@ -13,13 +13,15 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/create-github-app-token@v1
-      #   id: app-token
-      #   with:
-      #     app-id: ${{ vars.APP_ID }}
-      #     private-key: ${{ secrets.PRIVATE_KEY }}
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
       - run: |
           echo "Triggered by release ${{ github.event.release.tag_name }}"
 
           echo "${{ github.event.release.tag_name }}" > release-asset.txt
           gh release upload ${{ github.event.release.tag_name }} release-asset.txt
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
