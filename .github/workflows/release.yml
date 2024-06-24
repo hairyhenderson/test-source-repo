@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  release-please:
+  upload-assets:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/create-github-app-token@v1

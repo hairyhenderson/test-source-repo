@@ -19,6 +19,17 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - uses: googleapis/release-please-action@v4
+        id: release
         with:
           token: ${{ steps.app-token.outputs.token }}
           config-file: release-please-config.json
+      - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
+      - run: |
+          echo "release-please outputs: ${{ steps.release.outputs }}"
+
+          echo "${{ steps.release.outputs.tag_name }}" > release-asset.txt
+          gh release upload ${{ steps.release.outputs.tag_name }} release-asset.txt
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        if: ${{ steps.release.outputs.release_created }}
