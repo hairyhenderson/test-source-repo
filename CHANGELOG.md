@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.7](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.6...v0.0.7) (2024-06-24)
+
+
+### Bug Fixes
+
+* update 1 ([#2](https://github.com/hairyhenderson/test-source-repo/issues/2)) ([a930932](https://github.com/hairyhenderson/test-source-repo/commit/a930932737b538f38de9370ca88450f9b0fb35a4))
+
 ## [0.0.6](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.5...v0.0.6) (2024-06-24)
 
 
