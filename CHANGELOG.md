@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.3...v0.0.4) (2024-06-24)
+
+
+### Bug Fixes
+
+* **ci:** feed a token to the gh cli ([#6](https://github.com/hairyhenderson/test-source-repo/issues/6)) ([b5b8367](https://github.com/hairyhenderson/test-source-repo/commit/b5b83671aacbcddfef6b539e3823218bc02463fb))
+
 ## [0.0.3](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.2...v0.0.3) (2024-06-24)
 
 
