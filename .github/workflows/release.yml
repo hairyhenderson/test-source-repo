@@ -1,4 +1,4 @@
-name: Release Artifacts
+name: Release Assets
 
 on:
   release:
@@ -20,7 +20,6 @@ jobs:
       #     private-key: ${{ secrets.PRIVATE_KEY }}
       - run: |
           echo "Triggered by release ${{ github.event.release.tag_name }}"
-          echo "Release ID: ${{ github.event.release.id }}"
-          echo "Release Name: ${{ github.event.release.name }}"
-          echo "Release Body: ${{ github.event.release.body }}"
-          echo "Full Release: ${{ github.event.release }}"
+
+          echo "${{ github.event.release.tag_name }}" > release-asset.txt
+          gh release upload ${{ github.event.release.tag_name }} release-asset.txt
