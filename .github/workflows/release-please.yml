@@ -28,8 +28,16 @@ jobs:
       - run: |
           echo "release-please outputs: ${{ steps.release.outputs }}"
 
+          echo ${{ steps.release.outputs.body }} > notes.md
           echo "${{ steps.release.outputs.tag_name }}" > release-asset.txt
-          gh release upload ${{ steps.release.outputs.tag_name }} release-asset.txt
+
+          gh release create \
+            ${{ steps.release.outputs.tag_name }} \
+            release-asset.txt \
+            --draft \
+            --discussion-category "General" \
+            --notes-file=notes.md
+          # gh release upload ${{ steps.release.outputs.tag_name }} release-asset.txt
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         if: ${{ steps.release.outputs.release_created }}
