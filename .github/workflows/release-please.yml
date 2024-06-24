@@ -27,8 +27,8 @@ jobs:
             --token ${{ steps.app-token.outputs.token }} \
             --repo-url ${{ github.repository }} \
               github-release \
-              --draft > rp-out.log
-          
+              --draft | tee rp-out.log
+
           jq -R 'fromjson?' rp-out.log > rp-out.json
           echo "json output: $(cat rp-out.json)"
 
