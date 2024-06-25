@@ -12,6 +12,9 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - uses: actions/create-github-app-token@v1
         id: app-token
@@ -86,12 +89,24 @@ jobs:
           echo "prs_created=true"                      >> "$GITHUB_OUTPUT"
           node -e "console.log('pr=' +JSON.stringify($(cat rp-out.js)[0]))" >> "$GITHUB_OUTPUT"
           node -e "console.log('prs='+JSON.stringify($(cat rp-out.js)   ))" >> "$GITHUB_OUTPUT"
+  create-release:
+    runs-on: ubuntu-latest
+    needs: release-please
+    if: needs.release-please.outputs.release_created
+    env:
+      VERSION: ${{ needs.release-please.outputs.tag_name }}
+    steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
       - uses: actions/checkout@v4
-        if: ${{ steps.release.outputs.release_created }}
       - run: |
-          VERSION=${{ steps.release.outputs.tag_name }}
-
           echo "${VERSION}" > release-asset.txt
+
+          # list tags - is this one present?
+          git tag
 
           # assert that tag_name isn't empty
           if [ -z "${VERSION}" ]; then
@@ -110,4 +125,3 @@ jobs:
           gh release edit ${VERSION} --draft=false
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        if: ${{ steps.release.outputs.release_created }}
