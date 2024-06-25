@@ -29,7 +29,16 @@ jobs:
               github-release \
               --draft | tee rp-out.log
 
-          jq -R 'fromjson?' rp-out.log > rp-out.json
+          cat rp-out.log | sed -n '/^\[/,$p' > rp-out.js
+
+          # if it's just "[]" assume no-op
+          if [ "$(cat rp-out.js)" = "[]" ]; then
+            exit 0
+          fi
+
+          # convert js object to json
+          node -e "console.log(JSON.stringify($(cat rp-out.js)))" | jq '.[0]' > rp-out.json
+        
           echo "json output: $(cat rp-out.json)"
 
           # now set outputs
@@ -42,7 +51,14 @@ jobs:
             --repo-url ${{ github.repository }} \
               release-pr | tee rp-out.log
 
-          jq -R 'fromjson?' rp-out.log > rp-out.json
+          # if it's just "[]" assume no-op
+          if [ "$(cat rp-out.js)" = "[]" ]; then
+            exit 0
+          fi
+
+          # convert js object to json
+          node -e "console.log(JSON.stringify($(cat rp-out.js)))" | jq '.[0]' > rp-out.json
+        
           echo "json output: $(cat rp-out.json)"
 
           # now set outputs
