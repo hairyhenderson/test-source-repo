@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.13](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.12...v0.0.13) (2024-06-25)
+
+
+### Bug Fixes
+
+* fix8 ([#28](https://github.com/hairyhenderson/test-source-repo/issues/28)) ([a4611d1](https://github.com/hairyhenderson/test-source-repo/commit/a4611d17233f259478a67fe312684f50a7082934))
+
 ## [0.0.12](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.11...v0.0.12) (2024-06-25)
 
 
