@@ -1,4 +1,4 @@
-name: Release Assets
+name: Post-Release Deploy
 
 on:
   release:
@@ -10,8 +10,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  upload-assets:
+  deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: dev
     steps:
       - uses: actions/create-github-app-token@v1
         id: app-token
@@ -21,5 +23,6 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           echo "Triggered by release ${{ github.event.release.tag_name }}"
+          echo "${ENV_NAME}"
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
