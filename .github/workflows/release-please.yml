@@ -27,7 +27,7 @@ jobs:
       #     config-file: release-please-config.json
       - name: Install release-please
         run: npm -g install release-please
-      - name: Run release-please github-release
+      - name: release-please github-release
         id: release
         run: |
           release-please \
@@ -65,7 +65,7 @@ jobs:
           echo "major=$(     jq '.major'     rp-out.json)" >> "$GITHUB_OUTPUT"
           echo "minor=$(     jq '.minor'     rp-out.json)" >> "$GITHUB_OUTPUT"
           echo "patch=$(     jq '.patch'     rp-out.json)" >> "$GITHUB_OUTPUT"
-      - name: Run release-please release-pr
+      - name: release-please release-pr
         id: release-pr
         if: ${{ ! steps.release.outputs.release_created }}
         run: |
@@ -101,11 +101,11 @@ jobs:
 
           # link to the release discussion
           gh release edit ${VERSION} --discussion-category "General"
+
           # upload assets
           gh release upload ${VERSION} release-asset.txt
           gh release upload ${VERSION} README.md
-          # simulate work by sleeping
-          sleep 30
+
           # now publish the release
           gh release edit ${VERSION} --draft=false
         env:
