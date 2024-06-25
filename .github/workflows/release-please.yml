@@ -43,7 +43,7 @@ jobs:
           echo "json output: $(cat rp-out.json)"
 
           # now set outputs
-          echo "release_created=true" >> "$GITHUB_OUTPUT"
+          echo "release_created=true"                      >> "$GITHUB_OUTPUT"
           echo "id=$(        jq '.id'        rp-out.json)" >> "$GITHUB_OUTPUT"
           echo "name=$(      jq '.name'      rp-out.json)" >> "$GITHUB_OUTPUT"
           echo "tag_name=$(  jq '.tagName'   rp-out.json)" >> "$GITHUB_OUTPUT"
@@ -59,24 +59,41 @@ jobs:
           echo "patch=$(     jq '.patch'     rp-out.json)" >> "$GITHUB_OUTPUT"
       - name: Run release-please release-pr
         id: release-pr
+        if: ${{ ! steps.release.outputs.release_created }}
         run: |
           release-please \
             --token ${{ steps.app-token.outputs.token }} \
             --repo-url ${{ github.repository }} \
               release-pr | tee rp-out.log
 
+          # [
+          #   {
+          #     id: 162181057,
+          #     name: 'v0.0.9',
+          #     tagName: 'v0.0.9',
+          #     sha: '6f2db7dd71e7098501c751218aa1411395c6d47a',
+          #     notes: '## [0.0.9](https://github.com/hairyhenderson/test-source-repo/compare/v0.0.8...v0.0.9) (2024-06-25)\n',
+          #     url: 'https://github.com/hairyhenderson/test-source-repo/releases/tag/untagged-ea77c84cfaf14327b77c',
+          #     draft: true,
+          #     uploadUrl: 'https://uploads.github.com/repos/hairyhenderson/test-source-repo/releases/162181057/assets{?name,label}',
+          #     path: '.',
+          #     version: '0.0.9',
+          #     major: 0,
+          #     minor: 0,
+          #     patch: 9
+          #   }
+          # ]
+          cat rp-out.log | sed -n '/^\[/,$p' > rp-out.js
+
           # if it's just "[]" assume no-op
           if [ "$(cat rp-out.js)" = "[]" ]; then
             exit 0
           fi
 
-          # convert js object to json
-          node -e "console.log(JSON.stringify($(cat rp-out.js)))" | jq '.[0]' > rp-out.json
-        
-          echo "json output: $(cat rp-out.json)"
-
-          # now set outputs
-          cat rp-out.json >> "$GITHUB_OUTPUT"
+          # set outputs
+          echo "prs_created=true"                      >> "$GITHUB_OUTPUT"
+          node -e "console.log('pr=' +JSON.stringify($(cat rp-out.js)[0]))" >> "$GITHUB_OUTPUT"
+          node -e "console.log('prs='+JSON.stringify($(cat rp-out.js)   ))" >> "$GITHUB_OUTPUT"
       # - uses: googleapis/release-please-action@v4
       #   with:
       #     token: ${{ steps.app-token.outputs.token }}
