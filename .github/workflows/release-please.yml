@@ -111,6 +111,9 @@ jobs:
       - run: |
           echo "${VERSION}" > release-asset.txt
 
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
           git tag -sm "Releasing v$VERSION" v$VERSION && git push --tags
 
           # assert that tag_name isn't empty
