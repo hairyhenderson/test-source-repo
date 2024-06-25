@@ -44,21 +44,19 @@ jobs:
 
           # now set outputs
           echo "release_created=true" >> "$GITHUB_OUTPUT"
-          echo "id=$(cat rp-out.json | jq -r '.id')" >> "$GITHUB_OUTPUT"
-          echo "name=$(cat rp-out.json | jq -r '.name')" >> "$GITHUB_OUTPUT"
-          echo "tag_name=$(cat rp-out.json | jq -r '.tagName')" >> "$GITHUB_OUTPUT"
-          echo "sha=$(cat rp-out.json | jq -r '.sha')" >> "$GITHUB_OUTPUT"
-          echo "notes=$(cat rp-out.json | jq -r '.notes')" >> "$GITHUB_OUTPUT"
-          echo "url=$(cat rp-out.json | jq -r '.html_url')" >> "$GITHUB_OUTPUT"
-          echo "draft=$(cat rp-out.json | jq -r '.draft')" >> "$GITHUB_OUTPUT"
-          echo "upload_url=$(cat rp-out.json | jq -r '.upload_url')" >> "$GITHUB_OUTPUT"
-          echo "path=$(cat rp-out.json | jq -r '.path')" >> "$GITHUB_OUTPUT"
-          echo "version=$(cat rp-out.json | jq -r '.version')" >> "$GITHUB_OUTPUT"
-          echo "major=$(cat rp-out.json | jq -r '.major')" >> "$GITHUB_OUTPUT"
-          echo "minor=$(cat rp-out.json | jq -r '.minor')" >> "$GITHUB_OUTPUT"
-          echo "patch=$(cat rp-out.json | jq -r '.patch')" >> "$GITHUB_OUTPUT"
-
-          cat rp-out.json >> "$GITHUB_OUTPUT"
+          echo "id=$(        jq '.id'        rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "name=$(      jq '.name'      rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "tag_name=$(  jq '.tagName'   rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "sha=$(       jq '.sha'       rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "notes=$(     jq '.notes'     rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "html_url=$(  jq '.url'       rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "draft=$(     jq '.draft'     rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "upload_url=$(jq '.uploadUrl' rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "path=$(      jq '.path'      rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "version=$(   jq '.version'   rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "major=$(     jq '.major'     rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "minor=$(     jq '.minor'     rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "patch=$(     jq '.patch'     rp-out.json)" >> "$GITHUB_OUTPUT"
       - name: Run release-please release-pr
         id: release-pr
         run: |
