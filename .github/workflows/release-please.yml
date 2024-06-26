@@ -56,19 +56,19 @@ jobs:
 
           # now set outputs
           echo "release_created=true"                      >> "$GITHUB_OUTPUT"
-          echo "id=$(        jq '.id'        rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "name=$(      jq '.name'      rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "tag_name=$(  jq '.tagName'   rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "sha=$(       jq '.sha'       rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "notes=$(     jq '.notes'     rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "html_url=$(  jq '.url'       rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "draft=$(     jq '.draft'     rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "upload_url=$(jq '.uploadUrl' rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "path=$(      jq '.path'      rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "version=$(   jq '.version'   rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "major=$(     jq '.major'     rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "minor=$(     jq '.minor'     rp-out.json)" >> "$GITHUB_OUTPUT"
-          echo "patch=$(     jq '.patch'     rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "id=$(        jq -r '.id'        rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "name=$(      jq -r '.name'      rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "tag_name=$(  jq -r '.tagName'   rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "sha=$(       jq -r '.sha'       rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "notes=$(     jq   '.notes'     rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "html_url=$(  jq -r '.url'       rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "draft=$(     jq -r '.draft'     rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "upload_url=$(jq -r '.uploadUrl' rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "path=$(      jq -r '.path'      rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "version=$(   jq -r '.version'   rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "major=$(     jq -r '.major'     rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "minor=$(     jq -r '.minor'     rp-out.json)" >> "$GITHUB_OUTPUT"
+          echo "patch=$(     jq -r '.patch'     rp-out.json)" >> "$GITHUB_OUTPUT"
       - name: release-please release-pr
         id: release-pr
         if: ${{ ! steps.release.outputs.release_created }}
@@ -111,7 +111,7 @@ jobs:
       #     create_annotated_tag: true
       - run: |
           set -ex
-          echo "${VERSION}" > release-asset.txt
+          echo ${VERSION} > release-asset.txt
 
           # assert that tag_name isn't empty
           if [ -z "${VERSION}" ]; then
