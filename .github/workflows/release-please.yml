@@ -15,6 +15,7 @@ jobs:
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
+      html_url: ${{ steps.release.outputs.html_url }}
     steps:
       - uses: actions/create-github-app-token@v1
         id: app-token
@@ -109,6 +110,7 @@ jobs:
       #     custom_tag: ${{ env.VERSION }}
       #     create_annotated_tag: true
       - run: |
+          set -ex
           echo "${VERSION}" > release-asset.txt
 
           # assert that tag_name isn't empty
@@ -116,6 +118,10 @@ jobs:
             echo "tag_name is empty"
             exit 1
           fi
+
+          export GH_DEBUG=api
+
+          gh release list
 
           # link to the release discussion
           gh release edit ${VERSION} --discussion-category "General"
