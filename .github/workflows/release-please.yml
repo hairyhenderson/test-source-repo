@@ -123,14 +123,12 @@ jobs:
 
           gh release list
 
-          # link to the release discussion
-          gh release edit ${VERSION} --discussion-category "General"
-
+          
           # upload assets
           gh release upload ${VERSION} release-asset.txt
           gh release upload ${VERSION} README.md
-
-          # now publish the release
-          gh release edit ${VERSION} --draft=false
+          
+          # link to the release discussion and publish
+          gh release edit ${VERSION} --discussion-category "General" --draft=false
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
