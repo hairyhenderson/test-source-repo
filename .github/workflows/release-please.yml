@@ -146,7 +146,7 @@ jobs:
           set -ex
           echo ${VERSION} > release-asset.txt
 
-          ls -alh myapp_*
+          ls -alh build*
 
           # assert that tag_name isn't empty
           if [ -z "${VERSION}" ]; then
@@ -160,7 +160,7 @@ jobs:
 
           # upload assets
           assets=(release-asset.txt)
-          for f in myapp_*; do
+          for f in build*/myapp_*; do
             assets=($assets ${f})
           done
 
