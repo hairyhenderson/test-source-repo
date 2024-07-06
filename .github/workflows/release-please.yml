@@ -160,7 +160,7 @@ jobs:
       - name: save artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ matrix.goos }}-${{ matrix.goarch }}
+          name: checksums
           path: bin/*
           retention-days: 1
   create-release:
