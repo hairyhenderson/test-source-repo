@@ -137,7 +137,7 @@ jobs:
           make bin/gomplate_${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.variant }}${{ matrix.extension }} \
             VERSION=${VERSION}
 
-          if [ "${{ matrix.goos }}" = "windows" ]; then
+          if [ "${{ matrix.goos }}-${{ matrix.goarch }}" = "windows-amd64" ]; then
             make bin/gomplate_windows-amd64.zip VERSION=${VERSION}
           fi
       - name: save artifacts
@@ -162,6 +162,9 @@ jobs:
       - uses: actions/download-artifact@v4
       - name: organize artifacts
         run: |
+          ls -alh build*
+          ls -alh bin
+
           mkdir -p bin
           mv build*/* bin/
       - run: |
