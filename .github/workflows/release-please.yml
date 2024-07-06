@@ -95,7 +95,8 @@ jobs:
     needs: release-please
     if: needs.release-please.outputs.release_created
     env:
-      VERSION: ${{ needs.release-please.outputs.tag_name }}
+      VERSION: '4.1.0'
+      TAG_NAME: v4.1.0
     strategy:
       matrix:
         goos: [linux, darwin, windows]
@@ -103,6 +104,14 @@ jobs:
         exclude:
           - goos: windows
             goarch: arm64
+          - goos: windows
+            goarch: arm
+        include:
+          - goos: windows
+            extension: .exe
+          - goos: linux
+            goarch: arm
+            goarm: ['6', '7']
     steps:
       - uses: actions/create-github-app-token@v1
         id: app-token
@@ -110,9 +119,12 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - uses: actions/checkout@v4
+        with:
+          repository: hairyhenderson/gomplate
+          ref: cc2584028866967a39b096265d5b9af4516c734f
       - run: |
-          mkdir -p bin/
-          go build -o bin/myapp_${{ matrix.goos }}_${{ matrix.goarch }} .
+          export COMMIT=cc2584028866967a39b096265d5b9af4516c734f
+          make bin/gomplate_${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.extension }}
       - name: save artifacts
         uses: actions/upload-artifact@v4
         with:
