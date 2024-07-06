@@ -163,7 +163,6 @@ jobs:
       - name: organize artifacts
         run: |
           ls -alh build*
-          ls -alh bin
 
           mkdir -p bin
           mv build*/* bin/
