@@ -161,7 +161,7 @@ jobs:
           # upload assets
           assets=(release-asset.txt)
           for f in build*/myapp_*; do
-            assets=($assets ${f})
+            assets+=${f}
           done
 
           echo "assets: ${assets[@]}"
