@@ -156,20 +156,20 @@ jobs:
 
           # export GH_DEBUG=api
 
-          gh release list
+          # gh release list
 
           # upload assets
-          assets=("release-asset.txt")
+          assets="release-asset.txt"
           for f in build*/myapp_*; do
-            assets+=("$f")
+            assets="$assets ${f}"
           done
 
-          echo "assets: ${assets[@]}"
+          # echo "assets: ${assets[@]}"
 
-          for f in "${assets[@]}"; do
-            echo "uploading $f"
-            gh release upload ${VERSION} $f --clobber
-          done
+          gh release upload ${VERSION} $assets --clobber
+          # for f in ${assets[@]}; do
+          #   echo "uploading $f"
+          # done
           
           # link to the release discussion and publish
           gh release edit ${VERSION} --discussion-category "General" --draft=false
