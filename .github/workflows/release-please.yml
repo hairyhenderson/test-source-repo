@@ -116,7 +116,7 @@ jobs:
       - name: save artifacts
         uses: actions/upload-artifact@v4
         with:
-          path: bin/
+          path: bin/myapp_*
           retention-days: 1
   create-release:
     runs-on: ubuntu-latest
