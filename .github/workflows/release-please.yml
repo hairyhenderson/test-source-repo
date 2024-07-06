@@ -134,7 +134,9 @@ jobs:
         with:
           repository: hairyhenderson/gomplate
       - run: |
-          make bin/gomplate_${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.variant }}${{ matrix.extension }} \
+          make bin/gomplate_${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.variant }}${{ matrix.extension }}_checksum_sha256.txt \
+            VERSION=${VERSION}
+          make bin/gomplate_${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.variant }}${{ matrix.extension }}_checksum_sha512.txt \
             VERSION=${VERSION}
 
           if [ "${{ matrix.goos }}-${{ matrix.goarch }}" = "windows-amd64" ]; then
@@ -166,7 +168,8 @@ jobs:
 
           mkdir -p bin
           mv build*/* bin/
-      - run: |
+      - name: aggregate checksums
+        run: |
           ls -alh bin/
 
           make bin/checksums_sha256.txt VERSION=${VERSION}
@@ -197,42 +200,20 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY }}
       - uses: actions/checkout@v4
-      # - name: Tag release
-      #   uses: mathieudutour/github-tag-action@v6.2
-      #   with:
-      #     github_token: ${{ steps.app-token.outputs.token }}
-      #     custom_tag: ${{ env.VERSION }}
-      #     create_annotated_tag: true
       - name: Download built artifacts
         uses: actions/download-artifact@v4
-      - run: |
+      - name: Upload release assets
+        run: |
           set -ex
-          echo ${VERSION} > release-asset.txt
 
           ls -alh build*
 
-          # assert that tag_name isn't empty
-          if [ -z "${VERSION}" ]; then
-            echo "tag_name is empty"
-            exit 1
-          fi
-
-          # export GH_DEBUG=api
-
-          # gh release list
-
-          # upload assets
           assets="release-asset.txt"
           for f in build*/myapp_*; do
             assets="$assets ${f}"
           done
 
-          # echo "assets: ${assets[@]}"
-
           gh release upload ${VERSION} $assets --clobber
-          # for f in ${assets[@]}; do
-          #   echo "uploading $f"
-          # done
           
           # link to the release discussion and publish
           gh release edit ${VERSION} --discussion-category "General" --draft=false
