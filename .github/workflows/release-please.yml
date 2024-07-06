@@ -99,20 +99,31 @@ jobs:
       TAG_NAME: v4.1.0
     strategy:
       matrix:
-        goos: [linux, darwin, windows]
+        goos: [linux, darwin]
         goarch: [amd64, arm64]
-        exclude:
-          - goos: windows
-            goarch: arm64
         include:
-          - goos: windows
-            extension: .exe
+          - goos: freebsd
+            goarch: amd64
+          - goos: linux
+            goarch: '386'
           - goos: linux
             goarch: arm
             variant: 'v6'
           - goos: linux
             goarch: arm
             variant: 'v7'
+          - goos: linux
+            goarch: ppc64le
+          - goos: linux
+            goarch: s390x
+          - goos: solaris
+            goarch: amd64
+          - goos: windows
+            goarch: amd64
+            extension: .exe
+          - goos: windows
+            goarch: '386'
+            extension: .exe
     steps:
       - uses: actions/create-github-app-token@v1
         id: app-token
@@ -148,7 +159,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: hairyhenderson/gomplate
+      - uses: actions/download-artifact@v4
+      - name: organize artifacts
+        run: |
+          mkdir -p bin
+          mv build*/* bin/
       - run: |
+          ls -alh bin/
+
           make bin/checksums_sha256.txt VERSION=${VERSION}
           make bin/checksums_sha512.txt VERSION=${VERSION}
 
