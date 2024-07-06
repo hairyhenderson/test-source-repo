@@ -159,14 +159,14 @@ jobs:
           gh release list
 
           # upload assets
-          assets=(release-asset.txt)
+          assets=("release-asset.txt")
           for f in build*/myapp_*; do
-            assets+=${f}
+            assets+=("$f")
           done
 
           echo "assets: ${assets[@]}"
 
-          for f in ${assets[@]}; do
+          for f in "${assets[@]}"; do
             echo "uploading $f"
             gh release upload ${VERSION} $f --clobber
           done
