@@ -208,6 +208,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: checksums
+          path: bin/
       - name: Upload release assets
         run: |
           set -ex
