@@ -1,3 +1,3 @@
 module github.com/hairyhenderson/test-source-repo
 
-go 1.22.4
+go 1.27.3
